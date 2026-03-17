@@ -1,9 +1,9 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { SquareWheel } from "@/components/square-wheel"
+import { SquareWheel, SLICE_COLORS } from "@/components/square-wheel"
 
-const DEFAULT_OPTIONS = ["Opción 1", "Opción 2", "Opción 3", "Opción 4"]
+const DEFAULT_OPTIONS = ["Pizza", "Sushi", "Tacos", "Ensalada"]
 
 export default function RuletaPage() {
   const [count, setCount] = useState(4)
@@ -37,27 +37,25 @@ export default function RuletaPage() {
     setWinner(null)
     setIsSpinning(true)
 
-    const extraSpins = 5 + Math.floor(Math.random() * 5) // 5-9 full turns
+    const extraSpins = 5 + Math.floor(Math.random() * 5)
     const randomOffset = Math.random() * 360
     const totalDeg = extraSpins * 360 + randomOffset
 
     const startRot = rotation
     const endRot = startRot + totalDeg
-    const duration = 3000 + Math.random() * 1200
+    const duration = 3200 + Math.random() * 1200
 
     let startTime: number | null = null
 
     function easeOut(t: number) {
-      return 1 - Math.pow(1 - t, 3)
+      return 1 - Math.pow(1 - t, 4)
     }
 
     function animate(ts: number) {
       if (!startTime) startTime = ts
       const elapsed = ts - startTime
       const progress = Math.min(elapsed / duration, 1)
-      const eased = easeOut(progress)
-      const current = startRot + eased * totalDeg
-
+      const current = startRot + easeOut(progress) * totalDeg
       setRotation(current)
 
       if (progress < 1) {
@@ -65,14 +63,9 @@ export default function RuletaPage() {
       } else {
         setRotation(endRot)
         setIsSpinning(false)
-
-        // Figure out winner: pointer is at top center = angle 270deg (or -90deg)
-        // The slice that contains -90deg after rotation
         const anglePerSlice = 360 / count
-        // Normalize: which slice is at the pointer (pointing down from top = 270deg)
-        const pointerAngle = 270
         const normalizedRot = ((endRot % 360) + 360) % 360
-        const adjusted = ((pointerAngle - normalizedRot) % 360 + 360) % 360
+        const adjusted = ((270 - normalizedRot) % 360 + 360) % 360
         const winnerIndex = Math.floor(adjusted / anglePerSlice) % count
         setWinner(options[winnerIndex] || `Opción ${winnerIndex + 1}`)
       }
@@ -82,91 +75,30 @@ export default function RuletaPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground font-sans flex flex-col items-center py-10 px-4 gap-8">
+    <main className="min-h-screen bg-background font-sans flex flex-col items-center px-4 py-8 sm:py-12 gap-6 sm:gap-10">
+
       {/* Header */}
-      <div className="text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-balance">
-          RULETA CUADRADA
+      <header className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground text-balance">
+          Ruleta de Decisiones
         </h1>
-        <p className="text-muted-foreground mt-1 text-sm tracking-widest uppercase">
-          Cargá opciones y girá
+        <p className="text-muted-foreground mt-1.5 text-sm text-pretty">
+          Cargá las opciones y girá
         </p>
-      </div>
+      </header>
 
-      {/* Main layout */}
-      <div className="w-full max-w-3xl flex flex-col md:flex-row gap-8 items-start justify-center">
+      {/* Layout: mobile = column, desktop = row */}
+      <div className="w-full max-w-4xl flex flex-col md:flex-row-reverse gap-6 items-start justify-center">
 
-        {/* Left: controls */}
-        <div className="flex flex-col gap-5 w-full md:w-64 shrink-0">
-
-          {/* Cantidad */}
-          <div className="bg-card border border-border rounded p-4 flex flex-col gap-3">
-            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-              Cantidad de opciones
-            </label>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => handleCountChange(count - 1)}
-                disabled={count <= 2 || isSpinning}
-                className="w-9 h-9 rounded bg-secondary text-foreground font-bold text-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors disabled:opacity-30"
-                aria-label="Reducir opciones"
-              >
-                −
-              </button>
-              <span className="text-3xl font-bold tabular-nums w-8 text-center">{count}</span>
-              <button
-                onClick={() => handleCountChange(count + 1)}
-                disabled={count >= 8 || isSpinning}
-                className="w-9 h-9 rounded bg-secondary text-foreground font-bold text-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors disabled:opacity-30"
-                aria-label="Agregar opción"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          {/* Opciones */}
-          <div className="bg-card border border-border rounded p-4 flex flex-col gap-2">
-            <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">
-              Títulos
-            </label>
-            {options.map((opt, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <span
-                  className="w-3 h-3 rounded-sm shrink-0"
-                  style={{
-                    background: [
-                      "#f97316","#22c55e","#3b82f6","#ec4899",
-                      "#eab308","#14b8a6","#f43f5e","#a855f7"
-                    ][i % 8],
-                  }}
-                />
-                <input
-                  type="text"
-                  value={opt}
-                  disabled={isSpinning}
-                  onChange={(e) => handleOptionChange(i, e.target.value)}
-                  maxLength={20}
-                  placeholder={`Opción ${i + 1}`}
-                  className="flex-1 bg-input border border-border rounded px-2 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50"
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Spin button */}
-          <button
-            onClick={spin}
-            disabled={isSpinning}
-            className="w-full py-4 rounded bg-primary text-primary-foreground font-bold text-lg tracking-widest uppercase hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+        {/* Wheel */}
+        <div className="w-full md:flex-1 flex flex-col items-center gap-5">
+          <div
+            className="w-full max-w-[360px] sm:max-w-[420px] aspect-square rounded-2xl overflow-hidden"
+            style={{
+              boxShadow:
+                "0 4px 6px -1px rgba(0,0,0,0.05), 0 20px 60px -10px rgba(100,110,200,0.12), 0 0 0 1px rgba(0,0,0,0.04)",
+            }}
           >
-            {isSpinning ? "GIRANDO…" : "GIRAR"}
-          </button>
-        </div>
-
-        {/* Right: wheel + result */}
-        <div className="flex flex-col items-center gap-5 flex-1">
-          <div className="w-full max-w-[420px] aspect-square relative">
             <SquareWheel
               options={options.slice(0, count)}
               rotation={rotation}
@@ -174,13 +106,123 @@ export default function RuletaPage() {
             />
           </div>
 
-          {/* Winner */}
+          {/* Winner banner */}
           {winner && !isSpinning && (
-            <div className="bg-card border border-primary rounded px-6 py-4 text-center animate-in fade-in slide-in-from-bottom-4 duration-300">
-              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Resultado</p>
-              <p className="text-2xl font-bold text-primary text-balance">{winner}</p>
+            <div
+              className="w-full max-w-[360px] sm:max-w-[420px] bg-card rounded-2xl px-6 py-4 text-center animate-in fade-in slide-in-from-bottom-3 duration-400"
+              style={{
+                boxShadow: "0 2px 16px rgba(124,134,255,0.15), 0 0 0 1px rgba(124,134,255,0.12)",
+              }}
+            >
+              <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground mb-1">
+                Resultado
+              </p>
+              <p className="text-2xl font-semibold text-foreground text-balance">{winner}</p>
             </div>
           )}
+
+          {/* Spin button — shown below wheel on mobile, inside controls on desktop */}
+          <button
+            onClick={spin}
+            disabled={isSpinning}
+            className="md:hidden w-full max-w-[360px] sm:max-w-[420px] py-4 rounded-2xl font-semibold text-base tracking-wide transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+            style={{
+              background: isSpinning
+                ? "#d0d4ff"
+                : "linear-gradient(135deg, #a5b4fc 0%, #7c86ff 100%)",
+              color: "#fff",
+              boxShadow: isSpinning
+                ? "none"
+                : "0 4px 20px rgba(124,134,255,0.35)",
+            }}
+            aria-label="Girar la ruleta"
+          >
+            {isSpinning ? "Girando…" : "Girar"}
+          </button>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col gap-4 w-full md:w-72 shrink-0">
+
+          {/* Cantidad */}
+          <div
+            className="bg-card rounded-2xl p-5"
+            style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04)" }}
+          >
+            <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground mb-3">
+              Opciones
+            </p>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => handleCountChange(count - 1)}
+                disabled={count <= 2 || isSpinning}
+                className="w-10 h-10 rounded-xl bg-secondary text-foreground font-semibold text-xl flex items-center justify-center transition-all hover:bg-accent disabled:opacity-30 active:scale-95"
+                aria-label="Reducir cantidad"
+              >
+                −
+              </button>
+              <span className="text-4xl font-semibold tabular-nums flex-1 text-center text-foreground">
+                {count}
+              </span>
+              <button
+                onClick={() => handleCountChange(count + 1)}
+                disabled={count >= 8 || isSpinning}
+                className="w-10 h-10 rounded-xl bg-secondary text-foreground font-semibold text-xl flex items-center justify-center transition-all hover:bg-accent disabled:opacity-30 active:scale-95"
+                aria-label="Agregar opción"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Títulos */}
+          <div
+            className="bg-card rounded-2xl p-5"
+            style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04)" }}
+          >
+            <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground mb-3">
+              Títulos
+            </p>
+            <div className="flex flex-col gap-2.5">
+              {options.slice(0, count).map((opt, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <span
+                    className="w-3 h-3 rounded-full shrink-0 ring-1 ring-black/10"
+                    style={{ background: SLICE_COLORS[i % SLICE_COLORS.length] }}
+                    aria-hidden="true"
+                  />
+                  <input
+                    type="text"
+                    value={opt}
+                    disabled={isSpinning}
+                    onChange={(e) => handleOptionChange(i, e.target.value)}
+                    maxLength={20}
+                    placeholder={`Opción ${i + 1}`}
+                    className="flex-1 bg-input rounded-xl px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 disabled:opacity-50 transition-all"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Spin button — desktop only */}
+          <button
+            onClick={spin}
+            disabled={isSpinning}
+            className="hidden md:block w-full py-4 rounded-2xl font-semibold text-base tracking-wide transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+            style={{
+              background: isSpinning
+                ? "#d0d4ff"
+                : "linear-gradient(135deg, #a5b4fc 0%, #7c86ff 100%)",
+              color: "#fff",
+              boxShadow: isSpinning
+                ? "none"
+                : "0 4px 20px rgba(124,134,255,0.35)",
+            }}
+            aria-label="Girar la ruleta"
+          >
+            {isSpinning ? "Girando…" : "Girar"}
+          </button>
         </div>
       </div>
     </main>

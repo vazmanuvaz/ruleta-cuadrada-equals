@@ -4,48 +4,43 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.12 0 0);
-  --foreground: oklch(0.97 0 0);
-  --card: oklch(0.17 0 0);
-  --card-foreground: oklch(0.97 0 0);
-  --popover: oklch(0.17 0 0);
-  --popover-foreground: oklch(0.97 0 0);
-  --primary: oklch(0.75 0.22 50);
-  --primary-foreground: oklch(0.12 0 0);
-  --secondary: oklch(0.22 0 0);
-  --secondary-foreground: oklch(0.97 0 0);
-  --muted: oklch(0.22 0 0);
-  --muted-foreground: oklch(0.6 0 0);
-  --accent: oklch(0.65 0.22 145);
-  --accent-foreground: oklch(0.12 0 0);
-  --destructive: oklch(0.6 0.25 27);
-  --destructive-foreground: oklch(0.97 0 0);
-  --border: oklch(0.28 0 0);
-  --input: oklch(0.22 0 0);
-  --ring: oklch(0.75 0.22 50);
-  --chart-1: oklch(0.75 0.22 50);
-  --chart-2: oklch(0.65 0.22 145);
-  --chart-3: oklch(0.65 0.22 230);
-  --chart-4: oklch(0.72 0.22 0);
-  --chart-5: oklch(0.72 0.2 300);
-  --radius: 0.25rem;
-  --sidebar: oklch(0.17 0 0);
-  --sidebar-foreground: oklch(0.97 0 0);
-  --sidebar-primary: oklch(0.75 0.22 50);
-  --sidebar-primary-foreground: oklch(0.12 0 0);
-  --sidebar-accent: oklch(0.22 0 0);
-  --sidebar-accent-foreground: oklch(0.97 0 0);
-  --sidebar-border: oklch(0.28 0 0);
-  --sidebar-ring: oklch(0.75 0.22 50);
-  /* Ruleta slice colors */
-  --slice-1: #f97316;
-  --slice-2: #22c55e;
-  --slice-3: #3b82f6;
-  --slice-4: #ec4899;
-  --slice-5: #eab308;
-  --slice-6: #14b8a6;
-  --slice-7: #f43f5e;
-  --slice-8: #a855f7;
+  --background: oklch(0.975 0.004 240);
+  --foreground: oklch(0.22 0.01 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.01 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.01 250);
+  --primary: oklch(0.62 0.15 260);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.94 0.01 245);
+  --secondary-foreground: oklch(0.38 0.02 255);
+  --muted: oklch(0.94 0.01 245);
+  --muted-foreground: oklch(0.55 0.02 255);
+  --accent: oklch(0.91 0.04 250);
+  --accent-foreground: oklch(0.38 0.02 255);
+  --destructive: oklch(0.65 0.2 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9 0.01 245);
+  --input: oklch(0.95 0.008 245);
+  --ring: oklch(0.62 0.15 260);
+  --radius: 1rem;
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.22 0.01 250);
+  --sidebar-primary: oklch(0.62 0.15 260);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.94 0.01 245);
+  --sidebar-accent-foreground: oklch(0.38 0.02 255);
+  --sidebar-border: oklch(0.9 0.01 245);
+  --sidebar-ring: oklch(0.62 0.15 260);
+  /* Ruleta — colores pastel suaves */
+  --slice-1: #FFADAD;
+  --slice-2: #A8D8EA;
+  --slice-3: #B5EAD7;
+  --slice-4: #FFDAC1;
+  --slice-5: #C7CEEA;
+  --slice-6: #FFD6E7;
+  --slice-7: #D4F1BE;
+  --slice-8: #FFF1BA;
 }
 
 
