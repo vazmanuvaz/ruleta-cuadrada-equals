@@ -92,7 +92,7 @@ export default function RuletaPage() {
           Ruleta cuadrada
         </h1>
         <p className="text-muted-foreground mt-1 text-xs font-medium tracking-wide text-pretty">
-          by Equals
+          por Equals
         </p>
       </header>
 
