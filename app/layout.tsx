@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Ruleta de Decisiones',
-  description: 'Ruleta cuadrada para tomar decisiones',
+  title: 'Ruleta cuadrada',
+  description: 'Ruleta cuadrada by Equals',
   generator: 'v0.app',
   icons: {
     icon: [

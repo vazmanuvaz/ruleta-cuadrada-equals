@@ -89,10 +89,10 @@ export default function RuletaPage() {
       {/* Header */}
       <header className="text-center">
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground text-balance">
-          Ruleta de Decisiones
+          Ruleta cuadrada
         </h1>
-        <p className="text-muted-foreground mt-1.5 text-sm text-pretty">
-          Cargá las opciones y girá
+        <p className="text-muted-foreground mt-1 text-xs font-medium tracking-wide text-pretty">
+          por Equals
         </p>
       </header>
 
