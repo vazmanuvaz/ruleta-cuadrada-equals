@@ -3,10 +3,10 @@
 import { useState, useRef } from "react"
 import { SquareWheel, SLICE_COLORS } from "@/components/square-wheel"
 
-const DEFAULT_OPTIONS = ["Pizza", "Sushi", "Tacos", "Ensalada"]
+const DEFAULT_OPTIONS = ["PIP", "Laucha", "Toto", "Larri", "Bala"]
 
 export default function RuletaPage() {
-  const [count, setCount] = useState(4)
+  const [count, setCount] = useState(5)
   const [options, setOptions] = useState<string[]>(DEFAULT_OPTIONS)
   const [rotation, setRotation] = useState(0)
   const [isSpinning, setIsSpinning] = useState(false)
@@ -15,7 +15,7 @@ export default function RuletaPage() {
 
   function handleReset() {
     if (animRef.current) cancelAnimationFrame(animRef.current)
-    setCount(4)
+    setCount(5)
     setOptions(DEFAULT_OPTIONS)
     setRotation(0)
     setIsSpinning(false)
