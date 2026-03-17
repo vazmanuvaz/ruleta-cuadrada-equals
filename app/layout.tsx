@@ -11,21 +11,13 @@ export const metadata: Metadata = {
   description: 'Ruleta cuadrada by Equals',
   generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/equals-logo.jpg',
+    apple: '/equals-logo.jpg',
+  },
+  openGraph: {
+    title: 'Ruleta cuadrada',
+    description: 'Ruleta cuadrada by Equals',
+    images: [{ url: '/equals-logo.jpg' }],
   },
 }
 
