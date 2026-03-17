@@ -7,6 +7,7 @@ const DEFAULT_OPTIONS = ["PIP", "Laucha", "Toto", "Larri", "Bala"]
 
 export default function RuletaPage() {
   const [count, setCount] = useState(5)
+  const [question, setQuestion] = useState("")
   const [options, setOptions] = useState<string[]>(DEFAULT_OPTIONS)
   const [rotation, setRotation] = useState(0)
   const [isSpinning, setIsSpinning] = useState(false)
@@ -16,6 +17,7 @@ export default function RuletaPage() {
   function handleReset() {
     if (animRef.current) cancelAnimationFrame(animRef.current)
     setCount(5)
+    setQuestion("")
     setOptions(DEFAULT_OPTIONS)
     setRotation(0)
     setIsSpinning(false)
@@ -95,6 +97,20 @@ export default function RuletaPage() {
           por Equals
         </p>
       </header>
+
+      {/* Pregunta editable */}
+      <div className="w-full max-w-lg">
+        <input
+          type="text"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          placeholder="Escribi tu pregunta aca"
+          maxLength={80}
+          className="w-full text-center text-xl sm:text-2xl font-medium bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground/50 focus:outline-none caret-primary"
+          aria-label="Pregunta de la ruleta"
+        />
+        <div className="mt-1.5 h-px bg-border mx-auto w-3/4" />
+      </div>
 
       {/* Layout: mobile = column, desktop = row */}
       <div className="w-full max-w-4xl flex flex-col md:flex-row-reverse gap-6 items-start justify-center">
