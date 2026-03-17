@@ -150,8 +150,7 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
       ref={canvasRef}
       width={canvasSize}
       height={canvasSize}
-      className="w-full h-full"
-      style={{ imageRendering: "crisp-edges" }}
+      style={{ imageRendering: "crisp-edges", width: "100%", height: "auto", display: "block" }}
       aria-label="Ruleta de decisiones"
     />
   )
