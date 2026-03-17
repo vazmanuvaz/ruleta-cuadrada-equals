@@ -36,27 +36,32 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const count = options.length
 
+  // Canvas is √2× bigger than the wheel so corners are never clipped when rotating
+  const PADDING = Math.ceil(size * (Math.SQRT2 - 1) / 2)
+  const canvasSize = size + PADDING * 2
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas || count === 0) return
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    const s = canvas.width
-    const cx = s / 2
-    const cy = s / 2
-    const r = s / 2
+    const cs = canvas.width
+    const cx = cs / 2
+    const cy = cs / 2
+    // The wheel itself is `size` wide, centered inside the larger canvas
+    const r = size / 2
 
-    ctx.clearRect(0, 0, s, s)
+    ctx.clearRect(0, 0, cs, cs)
 
     ctx.save()
     ctx.translate(cx, cy)
     ctx.rotate((rotation * Math.PI) / 180)
     ctx.translate(-cx, -cy)
 
-    // Clip to square
+    // Clip to the wheel square only (centered in canvas)
     ctx.beginPath()
-    ctx.rect(0, 0, s, s)
+    ctx.rect(PADDING, PADDING, size, size)
     ctx.clip()
 
     const anglePerSlice = (2 * Math.PI) / count
@@ -67,7 +72,7 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
       const color = SLICE_COLORS[i % SLICE_COLORS.length]
       const labelColor = LABEL_COLORS[i % LABEL_COLORS.length]
 
-      // Pie slice
+      // Pie slice — extend radius beyond the square so corners are fully filled
       ctx.beginPath()
       ctx.moveTo(cx, cy)
       ctx.arc(cx, cy, r * 1.5, startAngle, endAngle)
@@ -75,7 +80,7 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
       ctx.fillStyle = color
       ctx.fill()
 
-      // Divider lines — very subtle
+      // Divider lines — subtle
       ctx.strokeStyle = "rgba(255,255,255,0.7)"
       ctx.lineWidth = 2
       ctx.stroke()
@@ -90,11 +95,10 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
       ctx.translate(lx, ly)
       ctx.rotate(labelAngle + Math.PI / 2)
       ctx.fillStyle = labelColor
-      const fontSize = Math.max(9, Math.min(14, s / (count * 1.6)))
+      const fontSize = Math.max(9, Math.min(14, size / (count * 1.6)))
       ctx.font = `600 ${fontSize}px -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif`
       ctx.textAlign = "center"
       ctx.textBaseline = "middle"
-
       const label = options[i] || ""
       const maxLen = 13
       const displayLabel = label.length > maxLen ? label.slice(0, maxLen - 1) + "…" : label
@@ -119,11 +123,11 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
 
     ctx.restore()
 
-    // Pointer — soft teardrop at top center
+    // Pointer — fixed at top center of the wheel (not rotating)
     const pW = 14
     const pH = 22
     ctx.save()
-    ctx.translate(cx, 0)
+    ctx.translate(cx, PADDING)
     ctx.beginPath()
     ctx.moveTo(-pW / 2, 0)
     ctx.lineTo(pW / 2, 0)
@@ -135,7 +139,7 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
     ctx.fill()
     ctx.shadowBlur = 0
     ctx.restore()
-  }, [options, rotation, count])
+  }, [options, rotation, count, PADDING, size])
 
   useEffect(() => {
     draw()
@@ -144,8 +148,8 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
   return (
     <canvas
       ref={canvasRef}
-      width={size}
-      height={size}
+      width={canvasSize}
+      height={canvasSize}
       className="w-full h-full"
       style={{ imageRendering: "crisp-edges" }}
       aria-label="Ruleta de decisiones"

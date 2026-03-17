@@ -101,7 +101,8 @@ export default function RuletaPage() {
 
         {/* Wheel — sin contenedor, flota directo */}
         <div className="w-full md:flex-1 flex flex-col items-center gap-5">
-          <div className="w-full max-w-[260px] sm:max-w-[300px] aspect-square">
+          {/* El canvas es √2× más grande que la ruleta para que las esquinas no se corten */}
+          <div className="w-full max-w-[360px] sm:max-w-[420px]">
             <SquareWheel
               options={options.slice(0, count)}
               rotation={rotation}
