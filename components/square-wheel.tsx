@@ -49,10 +49,6 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
 
     ctx.clearRect(0, 0, s, s)
 
-    // White background fill
-    ctx.fillStyle = "#ffffff"
-    ctx.fillRect(0, 0, s, s)
-
     ctx.save()
     ctx.translate(cx, cy)
     ctx.rotate((rotation * Math.PI) / 180)
@@ -151,7 +147,7 @@ export function SquareWheel({ options, rotation, isSpinning, size = 420 }: Squar
       width={size}
       height={size}
       className="w-full h-full"
-      style={{ imageRendering: "crisp-edges", borderRadius: "1rem" }}
+      style={{ imageRendering: "crisp-edges" }}
       aria-label="Ruleta de decisiones"
     />
   )

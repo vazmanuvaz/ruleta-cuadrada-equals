@@ -13,6 +13,15 @@ export default function RuletaPage() {
   const [winner, setWinner] = useState<string | null>(null)
   const animRef = useRef<number | null>(null)
 
+  function handleReset() {
+    if (animRef.current) cancelAnimationFrame(animRef.current)
+    setCount(4)
+    setOptions(DEFAULT_OPTIONS)
+    setRotation(0)
+    setIsSpinning(false)
+    setWinner(null)
+  }
+
   function handleCountChange(val: number) {
     const newCount = Math.max(2, Math.min(8, val))
     setCount(newCount)
@@ -90,15 +99,9 @@ export default function RuletaPage() {
       {/* Layout: mobile = column, desktop = row */}
       <div className="w-full max-w-4xl flex flex-col md:flex-row-reverse gap-6 items-start justify-center">
 
-        {/* Wheel */}
+        {/* Wheel — sin contenedor, flota directo */}
         <div className="w-full md:flex-1 flex flex-col items-center gap-5">
-          <div
-            className="w-full max-w-[360px] sm:max-w-[420px] aspect-square rounded-2xl overflow-hidden"
-            style={{
-              boxShadow:
-                "0 4px 6px -1px rgba(0,0,0,0.05), 0 20px 60px -10px rgba(100,110,200,0.12), 0 0 0 1px rgba(0,0,0,0.04)",
-            }}
-          >
+          <div className="w-full max-w-[360px] sm:max-w-[420px] aspect-square">
             <SquareWheel
               options={options.slice(0, count)}
               rotation={rotation}
@@ -121,24 +124,30 @@ export default function RuletaPage() {
             </div>
           )}
 
-          {/* Spin button — shown below wheel on mobile, inside controls on desktop */}
-          <button
-            onClick={spin}
-            disabled={isSpinning}
-            className="md:hidden w-full max-w-[360px] sm:max-w-[420px] py-4 rounded-2xl font-semibold text-base tracking-wide transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
-            style={{
-              background: isSpinning
-                ? "#d0d4ff"
-                : "linear-gradient(135deg, #a5b4fc 0%, #7c86ff 100%)",
-              color: "#fff",
-              boxShadow: isSpinning
-                ? "none"
-                : "0 4px 20px rgba(124,134,255,0.35)",
-            }}
-            aria-label="Girar la ruleta"
-          >
-            {isSpinning ? "Girando…" : "Girar"}
-          </button>
+          {/* Botones — móvil */}
+          <div className="md:hidden w-full max-w-[360px] sm:max-w-[420px] flex gap-3">
+            <button
+              onClick={spin}
+              disabled={isSpinning}
+              className="flex-1 py-4 rounded-2xl font-semibold text-base tracking-wide transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+              style={{
+                background: isSpinning ? "#d0d4ff" : "linear-gradient(135deg, #a5b4fc 0%, #7c86ff 100%)",
+                color: "#fff",
+                boxShadow: isSpinning ? "none" : "0 4px 20px rgba(124,134,255,0.35)",
+              }}
+              aria-label="Girar la ruleta"
+            >
+              {isSpinning ? "Girando…" : "Girar"}
+            </button>
+            <button
+              onClick={handleReset}
+              disabled={isSpinning}
+              className="py-4 px-5 rounded-2xl font-semibold text-sm tracking-wide transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] bg-secondary text-secondary-foreground hover:bg-accent"
+              aria-label="Reiniciar ruleta"
+            >
+              Reiniciar
+            </button>
+          </div>
         </div>
 
         {/* Controls */}
@@ -205,24 +214,30 @@ export default function RuletaPage() {
             </div>
           </div>
 
-          {/* Spin button — desktop only */}
-          <button
-            onClick={spin}
-            disabled={isSpinning}
-            className="hidden md:block w-full py-4 rounded-2xl font-semibold text-base tracking-wide transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
-            style={{
-              background: isSpinning
-                ? "#d0d4ff"
-                : "linear-gradient(135deg, #a5b4fc 0%, #7c86ff 100%)",
-              color: "#fff",
-              boxShadow: isSpinning
-                ? "none"
-                : "0 4px 20px rgba(124,134,255,0.35)",
-            }}
-            aria-label="Girar la ruleta"
-          >
-            {isSpinning ? "Girando…" : "Girar"}
-          </button>
+          {/* Botones — desktop */}
+          <div className="hidden md:flex gap-3 w-full">
+            <button
+              onClick={spin}
+              disabled={isSpinning}
+              className="flex-1 py-4 rounded-2xl font-semibold text-base tracking-wide transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+              style={{
+                background: isSpinning ? "#d0d4ff" : "linear-gradient(135deg, #a5b4fc 0%, #7c86ff 100%)",
+                color: "#fff",
+                boxShadow: isSpinning ? "none" : "0 4px 20px rgba(124,134,255,0.35)",
+              }}
+              aria-label="Girar la ruleta"
+            >
+              {isSpinning ? "Girando…" : "Girar"}
+            </button>
+            <button
+              onClick={handleReset}
+              disabled={isSpinning}
+              className="py-4 px-5 rounded-2xl font-semibold text-sm tracking-wide transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] bg-secondary text-secondary-foreground hover:bg-accent"
+              aria-label="Reiniciar ruleta"
+            >
+              Reiniciar
+            </button>
+          </div>
         </div>
       </div>
     </main>
