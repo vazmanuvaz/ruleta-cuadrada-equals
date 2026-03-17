@@ -101,7 +101,7 @@ export default function RuletaPage() {
 
         {/* Wheel — sin contenedor, flota directo */}
         <div className="w-full md:flex-1 flex flex-col items-center gap-5">
-          <div className="w-full max-w-[360px] sm:max-w-[420px] aspect-square">
+          <div className="w-full max-w-[260px] sm:max-w-[300px] aspect-square">
             <SquareWheel
               options={options.slice(0, count)}
               rotation={rotation}
@@ -112,7 +112,7 @@ export default function RuletaPage() {
           {/* Winner banner */}
           {winner && !isSpinning && (
             <div
-              className="w-full max-w-[360px] sm:max-w-[420px] bg-card rounded-2xl px-6 py-4 text-center animate-in fade-in slide-in-from-bottom-3 duration-400"
+              className="w-full max-w-[260px] sm:max-w-[300px] bg-card rounded-2xl px-6 py-4 text-center animate-in fade-in slide-in-from-bottom-3 duration-400"
               style={{
                 boxShadow: "0 2px 16px rgba(124,134,255,0.15), 0 0 0 1px rgba(124,134,255,0.12)",
               }}
@@ -125,7 +125,7 @@ export default function RuletaPage() {
           )}
 
           {/* Botones — móvil */}
-          <div className="md:hidden w-full max-w-[360px] sm:max-w-[420px] flex gap-3">
+          <div className="md:hidden w-full max-w-[260px] sm:max-w-[300px] flex gap-3">
             <button
               onClick={spin}
               disabled={isSpinning}
